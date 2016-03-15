@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.iml
 .gradle
 /local.properties
@@ -54,6 +55,8 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 ### Android template
+=======
+>>>>>>> 9e3e67095ab6566129f27bad1a2807bbe92c4185
 # Built application files
 *.apk
 *.ap_
@@ -83,4 +86,5 @@ proguard/
 
 # Android Studio Navigation editor temp files
 .navigation/
+
 
