@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.fernandocejas.frodo'
 
 
 
@@ -42,6 +43,8 @@ dependencies {
     compile  'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+
+    compile 'com.jiongbull:jlog:1.0.5'
 
 
 
