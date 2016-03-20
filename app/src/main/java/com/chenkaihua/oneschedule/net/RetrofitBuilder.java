@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitBuilder {
 
-    public Retrofit createRetrofit() {
+    public static Retrofit buildRetrofit() {
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -24,7 +24,7 @@ public class RetrofitBuilder {
                 .addInterceptor(logging).retryOnConnectionFailure(true)
                 .build();
         Retrofit retrofit = new Retrofit.Builder().client(client)
-                .baseUrl("http://www.baidu.com")
+                .baseUrl(NetURL.BASE_URL)
                 .addConverterFactory(gsonConverterFactory)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();

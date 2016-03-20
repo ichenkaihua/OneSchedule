@@ -15,6 +15,7 @@ import com.chenkaihua.oneschedule.view.ILoginView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by chenkh on 16-3-20.
@@ -48,10 +49,6 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView {
 
     private void initView() {
 
-        
-
-
-
 
     }
 
@@ -60,5 +57,12 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView {
     protected void onDestroy() {
         ButterKnife.unbind(this);
         super.onDestroy();
+    }
+
+    @OnClick(R.id.email_sign_in_button)
+    public void onClick() {
+        String name = mEmail.getText().toString();
+        String password = mPassword.getText().toString();
+        loginPresenter.login(name,password);
     }
 }
