@@ -2,7 +2,6 @@ package com.chenkaihua.oneschedule.net.api;
 
 import com.chenkaihua.oneschedule.model.UserModel;
 
-import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
