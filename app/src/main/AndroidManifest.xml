@@ -43,6 +43,12 @@
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".view.impl.RegisterActivity"
+            android:label="注册-OneSchedule"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
     </application>
 
 </manifest>

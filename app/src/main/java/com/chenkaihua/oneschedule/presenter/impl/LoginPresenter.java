@@ -31,46 +31,26 @@ public class LoginPresenter implements ILoginPresenter {
 
     @Override
     public void login(String phone, String password) {
-        RetrofitBuilder.buildRetrofit().create(UserApi.class).login(phone,password)
+        RetrofitBuilder.buildRetrofit().create(UserApi.class).login(phone, password)
                 .
-                subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Response<UserModel>>() {
                     @Override
-                    public void onCompleted() {
-                        JLog.v("已完成");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        JLog.v("throwable:"+e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(Response<UserModel> userModelResponse) {
-                        JLog.v("是否成功:"+userModelResponse.code());
-                        JLog.v("userModel:"+userModelResponse.body().toString());
-
-                    }
-                });
-                /*.subscribe(new Observer<UserModel>() {
-                    @Override
-                    public void onCompleted() {
+                    public void onCompleted(){
                             JLog.v("已完成");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        HttpException exception = (HttpException) e;
-                        JLog.v("throwable:"+e.getMessage());
-
+                        JLog.e("throwable:" + e.getMessage());
                     }
 
                     @Override
-                    public void onNext(UserModel userModel) {
-                        JLog.v("userModel:"+userModel.toString());
+                    public void onNext(Response<UserModel> userModelResponse) {
+                        JLog.v("是否成功:" + userModelResponse.code());
+                        JLog.v("userModel:" + userModelResponse.body().toString());
+
                     }
                 });
-*/
     }
 }

@@ -16,7 +16,9 @@ public class App  extends Application{
         //初始化log
         JLog.init(this)
                 .writeToFile(true)
-                .setDebug(BuildConfig.DEBUG);
+                .setDebug(Config.IS_DEBUG);
+
+
 
     }
 }
