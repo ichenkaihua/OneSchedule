@@ -31,24 +31,32 @@ public class LoginPresenter implements ILoginPresenter {
 
     @Override
     public void login(String phone, String password) {
+        loginView.onLoginStart();
         RetrofitBuilder.buildRetrofit().create(UserApi.class).login(phone, password)
                 .
                         subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Response<UserModel>>() {
                     @Override
                     public void onCompleted(){
-                            JLog.v("已完成");
+                        JLog.v("已完成");
+                        loginView.onLoginCompeted();
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         JLog.e("throwable:" + e.getMessage());
+                        loginView.onLoginError(e);
                     }
 
                     @Override
                     public void onNext(Response<UserModel> userModelResponse) {
                         JLog.v("是否成功:" + userModelResponse.code());
                         JLog.v("userModel:" + userModelResponse.body().toString());
+                        if (userModelResponse.isSuccess()) {
+                            loginView.onLoginSuccess(userModelResponse.body());
+                        }
+                        else loginView.onLoginFailue(userModelResponse.code());
 
                     }
                 });

@@ -1,5 +1,6 @@
 package com.chenkaihua.oneschedule.net;
 
+import com.chenkaihua.oneschedule.Config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -24,7 +25,7 @@ public class RetrofitBuilder {
                 .addInterceptor(logging).retryOnConnectionFailure(true)
                 .build();
         Retrofit retrofit = new Retrofit.Builder().client(client)
-                .baseUrl(NetURL.BASE_URL)
+                .baseUrl(Config.NetURL.BASE_URL)
                 .addConverterFactory(gsonConverterFactory)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
