@@ -8,7 +8,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.chenkaihua.oneschedule.R;
 import com.chenkaihua.oneschedule.base.BaseAppCompatActivity;
@@ -31,7 +30,7 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView {
     AutoCompleteTextView mEmail;
     @Bind(R.id.password)
     EditText mPassword;
-    @Bind(R.id.email_sign_in_button)
+    @Bind(R.id.btn_login)
     Button mEmailSignInButton;
     @Bind(R.id.email_login_form)
     LinearLayout mEmailLoginForm;
@@ -52,11 +51,11 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView {
         ButterKnife.bind(this);
         loginPresenter = new LoginPresenter(this);
         mToolbar.setTitle("登录");
-
-
-
-
+        loginPresenter.onCrate(savedInstanceState);
     }
+
+
+
 
 
     private void initView() {
@@ -68,10 +67,12 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView {
     @Override
     protected void onDestroy() {
         ButterKnife.unbind(this);
+        loginPresenter.onDestory();
         super.onDestroy();
+
     }
 
-    @OnClick(R.id.email_sign_in_button)
+    @OnClick(R.id.btn_login)
     public void onClick() {
         String name = mEmail.getText().toString();
         String password = mPassword.getText().toString();
@@ -111,15 +112,14 @@ public class LoginActivity extends BaseAppCompatActivity implements ILoginView {
     }
 
     @Override
-    public void onLoginCompeted() {
-        showToast("登录完成");
+    public void onLoginFinal() {
         progressDialog.dismiss();
 
 
     }
 
     @Override
-    public void onLoginFailue(int status) {
-        Toast.makeText(this,"登录失败",Toast.LENGTH_SHORT);
+    public void onLoginFailue(int status,String msg) {
+        showToast("登录失败!!"+msg);
     }
 }
