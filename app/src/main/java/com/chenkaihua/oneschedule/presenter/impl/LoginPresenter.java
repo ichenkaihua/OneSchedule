@@ -1,27 +1,31 @@
 package com.chenkaihua.oneschedule.presenter.impl;
 
 import com.chenkaihua.oneschedule.model.UserModel;
+import com.chenkaihua.oneschedule.net.BaseResponse;
 import com.chenkaihua.oneschedule.net.RetrofitBuilder;
 import com.chenkaihua.oneschedule.net.api.UserApi;
+import com.chenkaihua.oneschedule.presenter.AbstractPresenter;
 import com.chenkaihua.oneschedule.presenter.ILoginPresenter;
+import com.chenkaihua.oneschedule.utils.StatusHelper;
 import com.chenkaihua.oneschedule.view.ILoginView;
 import com.jiongbull.jlog.JLog;
 
-import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subjects.Subject;
+import rx.Observable;
+import rx.Subscriber;
+
+import static rx.android.schedulers.AndroidSchedulers.mainThread;
+import static rx.schedulers.Schedulers.io;
 
 /**
  * Created by chenkh on 16-3-20.
  */
-public class LoginPresenter implements ILoginPresenter {
+public class LoginPresenter extends AbstractPresenter implements ILoginPresenter {
 
 
     private ILoginView loginView;
+
+    private Subscriber<Response<BaseResponse<UserModel>>> loginscriber;
 
 
     public LoginPresenter(ILoginView loginView) {
@@ -31,32 +35,57 @@ public class LoginPresenter implements ILoginPresenter {
 
     @Override
     public void login(String phone, String password) {
-        loginView.onLoginStart();
-        RetrofitBuilder.buildRetrofit().create(UserApi.class).login(phone, password)
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<UserModel>>() {
+
+
+        Observable<Response<BaseResponse<UserModel>>> responseObservable = RetrofitBuilder.buildRetrofit().create(UserApi.class).login(phone, password);
+        responseObservable.
+                subscribeOn(io()).observeOn(mainThread()).unsubscribeOn(io()).subscribe(
+                new Subscriber<Response<BaseResponse<UserModel>>>() {
+
+                    @Override
+                    public void onStart() {
+                        loginView.onLoginStart();
+
+                    }
+
                     @Override
                     public void onCompleted() {
-                        JLog.v("已完成");
-                        loginView.onLoginCompeted();
+                        loginView.onLoginFinal();
+                        unsubscribe();
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        JLog.e("throwable:" + e.getMessage());
+                        e.printStackTrace();
+                        JLog.e("error:" + e.getClass().getName() + e.getLocalizedMessage());
                         loginView.onLoginError(e);
+                        loginView.onLoginFinal();
+                        unsubscribe();
                     }
 
                     @Override
-                    public void onNext(Response<UserModel> userModelResponse) {
-                        JLog.v("是否成功:" + userModelResponse.code());
-                        JLog.v("userModel:" + userModelResponse.body().toString());
-                        if (userModelResponse.isSuccess()) {
-                            loginView.onLoginSuccess(userModelResponse.body());
-                        } else loginView.onLoginFailue(userModelResponse.code());
+
+                    public void onNext(Response<BaseResponse<UserModel>> baseResponseResponse) {
+                        int code = baseResponseResponse.code();
+                        if (code == 200) {
+                            loginView.onLoginSuccess(baseResponseResponse.body().getData());
+                        } else if (StatusHelper.isCustomeStatus(code)) {
+                            BaseResponse baseResponse = StatusHelper.parseErrorBody(baseResponseResponse);
+                            loginView.onLoginFailue(code, baseResponse.getMsg());
+                        } else
+                            loginView.onLoginFailue(code, StatusHelper.getStatusMsg(baseResponseResponse));
 
                     }
-                });
+                }
+        );
+
+
+    }
+
+    @Override
+    public void onDestory() {
+
+
     }
 }
