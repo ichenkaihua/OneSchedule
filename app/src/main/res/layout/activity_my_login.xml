@@ -69,6 +69,26 @@
 
 
 
+        <Button
+            android:id="@+id/btn_select_file"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="选择文件"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_upload"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="上传文件"
+            android:textStyle="bold" />
+
+
+
 
 
 

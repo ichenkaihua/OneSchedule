@@ -21,7 +21,7 @@ public class Config {
 
         public static final String URL_LOCAL="http://192.168.1.106:8080/";
         public static final String URL_PRODUCAT="http://cloud.chenkaihua.com:8080/oneschedule/";
-        public static final String BASE_URL=URL_PRODUCAT;
+        public static final String BASE_URL=URL_LOCAL;
 
 
 
